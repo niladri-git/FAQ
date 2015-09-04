@@ -1,0 +1,169 @@
+apache vs tomcat
+
+Apache Tomcat is used to deploy your Java Servlets and JSPs. So in your Java project you can build your WAR (short for Web ARchive) file, and just drop it in the deploy directory in Tomcat.
+
+So basically Apache is an HTTP Server, serving HTTP. Tomcat is a Servlet and JSP Server serving Java technologies.
+
+Tomcat is a servlet container. A servlet, at the end, is a Java class. JSP files (which are similar to PHP, and older ASP files) are generated into Java code (HttpServlet), which is then compiled to .class files by the server and executed by the Java virtual machine.
+
+Tomcat has it's own HTTP server built into it, and is fully functional at serving static content too. a fully optimized Tomcat server should serve static files fast and if you have Java servlets, JSPs and ColdFusion files in addition to static content you may find tomcat does an excellent job by itself.
+
+Apache is a general-purpose http server, which supports a number of advanced options that Tomcat doesn't.
+Although Tomcat can be used as a general purpose http server, you can also set up Apache and Tomcat to work together with Apache serving static content and forwarding the requests for dynamic content to Tomcat.
+
++++
+
+Tools for migrating from svn to git
+
+- svn2git
+	Reqs Ruby
+	
+- git svn command 
+	$ git svn clone
+
+svn2git is a Ruby program that uses Git’s built-in svn command to import data from a Subversion repository. The disadvantage of the git-svn command is that branches and tags are created as remote branches. By comparison, svn2git combs through every commit in your trunk, branches, and tags and recreates your repository locally using Git’s master/branches/tags structure. Since this is exactly what we wanted to accomplish, svn2git was a perfect fit.
+
++++
+
+jsp vs servlet
+
+A very basic difference:
+
+    Servlet is html in java
+    JSP is java in html
+
+Other diff are:
+
+    JSP is a webpage scripting language that can generate dynamic content while Servlets are Java programs that are already compiled which also creates dynamic web content
+    Servlets run faster compared to JSP
+    JSP can be compiled into Java Servlets
+    It’s easier to code in JSP than in Java Servlets
+    In MVC, jsp act as a view and servlet act as a controller.
+    JSP are generally preferred when there is not much processing of data required. But servlets are best for use when there is more processing and manipulation involved.
+    The advantage of JSP programming over servlets is that we can build custom tags which can directly call Java beans. There is no such facility in servlets.
+    We can achieve functionality of JSP at client side by running JavaScript at client side. There are no such methods for servlets.
+	JSP are generally preferred when there is not much processing of data required.
+
+
+Compare a simple "Hello World" program in JSP vs servlet:
+
+JSP:
+
+<html>
+        <head><title>Hello World JSP Page.</title></head>
+        <body>
+                <font size="10"><%="Hello World!" %></font>
+        </body>
+</html>
+
+Servlet
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+    public class HelloWorld extends HttpServlet{ 
+      public void doGet(HttpServletRequest request, 
+      HttpServletResponse response)
+      throws ServletException,IOException{
+      response.setContentType("text/html");
+      PrintWriter pw = response.getWriter();
+      pw.println("<html>");
+      pw.println("<head><title>Hello World</title></title>");
+      pw.println("<body>");
+      pw.println("<h1>Hello World</h1>");
+      pw.println("</body></html>");
+      }
+    }
+
+************
+
+JSP (JavaServer Pages)
+
+JSP is a Java view technology running on the server machine which allows you to write template text in (the client side languages like HTML, CSS, JavaScript and so on). JSP supports taglibs, which are backed by pieces of Java code that let you control the page flow or output dynamically. A well known taglib is JSTL. JSP also supports Expression Language, which can be used to access backend data (via attributes available in page, request, session and application scopes), mostly in combination with taglibs.
+
+When a JSP is requested for the first time or when the webapp starts up, the servlet container will compile it into a class extending HttpServlet and use it during the webapp's lifetime. You can find the generated source code in the server's work directory. In for example Tomcat, it's the /work directory. On a JSP request, the servlet container will execute the compiled JSP class and send the generated output (usually just HTML/CSS/JS) through the webserver over network to the client side, which in turn displays it in the web browser.
+Servlets
+
+Servlet is an Java application programming interface (API) running on the server machine, which intercepts requests made by the client and generates/sends a response. A well known example is the HttpServlet which provides methods to hook on HTTP requests using the popular HTTP methods such as GET and POST. You can configure HttpServlets to listen on a certain HTTP URL pattern, which is configurable in web.xml, or more recently with Java EE 6, with @WebServlet annotation.
+
+When a Servlet is first requested or during webapp startup, the servlet container will create an instance of it and keep it in memory during the webapp's lifetime. The same instance will be reused for every incoming request whose URL matches the servlet's URL pattern. You can access the request data by HttpServletRequest and handle the response by HttpServletResponse. Both objects are available as method arguments inside any of the overridden methods of HttpServlet, such as doGet() and doPost().
+
+************
+
+What is web.xml file and what all things can I do with it ?
+
+A web application is defined as a hierarchy of directories and files in a standard layout. Such a hierarchy can be accessed in its "unpacked" form, where each directory and file exists in the filesystem separately, or in a "packed" form known as a Web ARchive, or WAR file. The former format is more useful during development, while the latter is used when you distribute your application to be installed.
+
+The top-level directory of your web application hierarchy is also the document root of your application. Here, you will place the HTML files and JSP pages that comprise your application's user interface. When the system administrator deploys your application into a particular server, he or she assigns a context path to your application. Thus, if the system administrator assigns your application to the context path /catalog, then a request URI referring to /catalog/index.html will retrieve the index.html file from your document root.
+
+The /WEB-INF/web.xml file is the Web Application Deployment Descriptor of your application. This file is an XML document that defines everything about your application that a server needs to know (except the context path, which is assigned by the Application Deployer and Administrator when the application is deployed): servlets and other components like filters or listeners, initialization parameters, container-managed security constraints, resources, welcome pages, etc.
+
+************
+
++++
+
+Tomcat sample.war deployment
+
+In software engineering, a WAR file (or Web application ARchive[1]) is a JAR file used to distribute a collection of JavaServer Pages, Java Servlets, Java classes, XML files, tag libraries, static web pages (HTML and related files) and other resources that together constitute a web application.
+
+There are special files and directories within a WAR file:
+
+    The /WEB-INF directory in the WAR file contains a file named web.xml which defines the structure of the web application.  If the web application is only serving JSP files, the web.xml file is not strictly necessary. If the web application uses servlets, then the servlet container uses web.xml to ascertain to which servlet a URL request will be routed. web.xml is also used to define context variables which can be referenced within the servlets and it is used to define environmental dependencies which the deployer is expected to set up. 
+	
+Advantages of WAR files
+
+    Easy testing and deployment of web applications
+    Easy identification of the version of the deployed application
+	
+Disadvantages of WAR files
+
+One disadvantage of web deployment using WAR files (especially in very dynamic environments) stems from the restriction that minor changes cannot be made during runtime. Any change whatsoever requires regenerating and redeploying the entire WAR file.
+
+To create war file, you need to use jar tool of JDK. You need to use -c switch of jar, to create the war file.
+
+Go inside the project directory of your project (outside the WEB-INF), then write the following command:
+
+    jar -cvf projectname.war *  
+
+To extract the war file, you need to use -x switch of jar tool of JDK. Let's see the command to extract the war file.
+
+    jar -xvf projectname.war  
+	
+war file deployment:
+
+There are two ways to deploy the war file.
+
+    By server console panel
+    By manually having the war file in specific folder of server.
+
+	
+Steps (example for Windows):
+
+    Copy the .war file to %CATALINA_HOME%\webapps ( E.g.: C:\tomcat\webapps )
+
+    Run %CATALINA_HOME%\bin\startup.bat
+
+    Your .war file will be extracted automatically to a folder that has the same name (without extension)
+
+    Go to %CATALINA_HOME%\conf\server.xml and take the port for the HTTP protocol. <Connector port="8080" ... />. The default value is 8080.
+
+    Access the following URL: 
+		http://localhost:8080/sample
+		
+	
++++
+
+JAR (Java Archive) is a package file format typically used to aggregate many Java class files and associated metadata and resources (text, images, etc.) into one file to distribute application software or libraries on the Java platform. A JAR file allows Java runtimes to efficiently deploy a set of classes and their associated resources. The elements in a JAR file can be compressed, which, together with the ability to download an entire application in a single request, makes downloading a JAR file much more convenient than separately downloading the many uncompressed files which would form a single Java Application. A JAR file has an optional manifest file located in the path META-INF/MANIFEST.MF. The entries in the manifest file determine how one can use the JAR file. For instance, a Classpath entry can be used to specify other JAR files for loading with the JAR. Thus the manifest file is used to define extension and package-related data.
+
+A JAR file includes a manifest at the canonical location META-INF/MANIFEST.MF.[7] There can be only one manifest file in an archive, and it must be in the META-INF directory. All the entries are as name-value pairs. The name of a header is separated from its value by a colon. The manifest can also contain information about the other files that are packaged in the archive. Exactly what file information is recorded in the manifest will depend on the intended use for the JAR file. The default manifest file makes no assumptions about what information it should record about other files, so its single line contains data only about itself. The MANIFEST.MF file can be used to specify all the classes that must be loaded for an application to be able to run i.e to Specify Dependencies.
+
+Executable JAR files
+
+An executable Java program can be packaged in a JAR file, along with any libraries the program uses. Executable JAR files have the manifest specifying the entry point class with Main-Class: myPrograms.MyClass and an explicit Class-Path (and the -cp argument is ignored). If an application is bundled in a JAR file, the Java Virtual Machine needs to be told what the entry point to the application is. An entry point is any class with a public static void main(String[] args) method. This information is provided in the Main-Class header, which has the general form:
+
+Main-Class: com.example.MyClassName
+
+In this example, com.example.MyClassName.main() will be executed.
+
++++

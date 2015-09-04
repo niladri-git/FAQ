@@ -1,0 +1,29 @@
+TODO
+
+Java:
+
+- jar creation and dep
+- war creation and dep
+
+SVN:
+
+- branching
+- tagging
+
+ANT:
+
+- build
+- dep
+
+Maven:
+
+- build
+- dep
+
++++
+
+- Tomcat
+- Apache
+- Puppet
+
++++
